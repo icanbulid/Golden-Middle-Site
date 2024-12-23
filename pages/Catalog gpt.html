@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Корзина покупок</title>
+    <style>
+        body.lock {
+            overflow: hidden; /* Блокируем прокрутку при открытом попапе */
+        }
+        .popup {
+            display: none; /* Скрыт по умолчанию */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .popup--open {
+            display: flex; /* Показываем попап */
+        }
+        .popup__container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            width: 80%;
+            max-width: 500px;
+            position: relative;
+        }
+        .popup__close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        .card {
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 10px;
+            margin: 10px;
+            text-align: center;
+        }
+        .card__add {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<button class="cart" id="cart">
+    <img class="cart__image" src="https://img.icons8.com/ios-filled/50/000000/shopping-cart.png" alt="Cart" />
+    <div class="cart__num" id="cart_num">0</div>
+</button>
+
+<div class="card">
+    <img class="card__image" src="https://via.placeholder.com/150" alt="Product Image" />
+    <h2 class="card__title">Продукт 1</h2>
+    <div class="card__price--common">1000</div>
+    <div class="card__price--discount">800</div>
+    <button class="card__add">Добавить в корзину</button>
+</div>
+
+<div class="card">
+    <img class="card__image" src="https://via.placeholder.com/150" alt="Product Image" />
+    <h2 class="card__title">Продукт 2</h2>
+    <div class="card__price--common">2000</div>
+    <div class="card__price--discount">1500</div>
+    <button class="card__add">Добавить в корзину</button>
+</div>
+
+<div class="popup" id="popup">
+    <div class="popup__container" id="popup_container">
+        <h1>Корзина</h1>
+        <div id="popup_product_list"></div>
+        <div>
+            <div>Итого: <span id="popup_cost"></span></div>
+            <div>Скидка: <span id="popup_discount"></span></div>
+            <div>Итого со скидкой: <span id="popup_cost_discount"></span></div>
+        </div>
+        <button class="popup__close" id="popup_close">✖</button>
+    </div>
+</div>
+
+<script>
+    function toNum(str) {
+        const num = Number(str.replace(/ /g, ""));
+        return num;
+    }
+
+    function toCurrency(num) {
+        const format = new Intl.NumberFormat("ru-RU", {
+            style: "currency",
+            currency: "RUB",
+            minimumFractionDigits: 0,
+        }).format(num);
+        return format;
+    }
+
+    const cardAddArr = Array.from(document.querySelectorAll(".card__add"));
+    const cartNum = document.querySelector("#cart_num");
+    const cart = document.querySelector("#cart");
+    const popup = document.querySelector("#popup");
+    const popupClose = document.querySelector("#popup_close");
+    const body = document.body;
+    const popupProductList = document.querySelector("#popup_product_list");
+    const popupCost = document.querySelector("#popup_cost");
+    const popupDiscount = document.querySelector("#popup_discount");
+    const popupCostDiscount = document.querySelector("#popup_cost_discount");
+
+    class Product {
+        constructor(card) {
+            this.imageSrc = card.querySelector(".card__image").src;
+            this.name = card.querySelector(".card__title").innerText;
+            this.price = card.querySelector(".card__price--common").innerText;
+            this.priceDiscount = card.querySelector(".card__price--discount").innerText;
+        }
+    }
+
+    class Cart {
+        constructor() {
+            this.products = [];
+        }
+        get count() {
+            return this.products.length;
+        }
+        addProduct(product) {
+            this.products.push(product);
+        }
+        removeProduct(product) {
+            const index = this.products.indexOf(product);
+            if (index > -1) {
+                this.products.splice(index, 1);
+            }
+        }
+        get cost() {
+            return this.products.reduce((acc, product) => acc + toNum(product.price), 0);
+        }
+        get costDiscount() {
+            return this.products.reduce((acc, product) => acc + toNum(product.priceDiscount), 0);
+        }
+        get discount() {
+            return this.cost - this.costDiscount;
+        }
+    }
+
+    const myCart = new Cart();
+
+    if (localStorage.getItem("cart") == null) {
+        localStorage.setItem("cart", JSON.stringify(myCart));
+    }
+
+    const savedCart = JSON.parse(localStorage.getItem("cart"));
+    myCart.products = savedCart.products || [];
+    cartNum.textContent = myCart.count;
+
+    cardAddArr.forEach((cardAdd) => {
+        cardAdd.addEventListener("click", (e) => {
+            e.preventDefault();
+            const card = e.target.closest(".card");
+            const product = new Product(card);
+            myCart.addProduct(product);
+            localStorage.setItem("cart", JSON.stringify(myCart));
+            cartNum.textContent = myCart.count;
+        });
+    });
+
+    cart.addEventListener("click", (e) => {
+        e.preventDefault();
+        popup.classList.add("popup--open");
+        body.classList.add("lock");
+        popupContainerFill();
+    });
+
+    popupClose.addEventListener("click", (e) => {
+        e.preventDefault();
+        popup.classList.remove("popup--open");
+        body.classList.remove("lock");
+    });
+
+    function popupContainerFill() {
+        popupProductList.innerHTML = '';
+        myCart.products.forEach((product) => {
+            const productItem = document.createElement("div");
+            productItem.classList.add("popup__product");
+            productItem.innerHTML = `
+                <img src="${product.imageSrc}" alt="${product.name}" class="popup__product-image" />
+                <h2 class="popup__product-title">${product.name}</h2>
+                <div class="popup__product-price">${toCurrency(toNum(product.priceDiscount))}</div>
+                <button class="popup__product-delete">✖</button>
+            `;
+
+            const productDelete = productItem.querySelector(".popup__product-delete");
+            productDelete.addEventListener("click", () => {
+                myCart.removeProduct(product);
+                localStorage.setItem("cart", JSON.stringify(myCart));
+                popupContainerFill();
+                cartNum.textContent = myCart.count;
+            });
+
+            popupProductList.appendChild(productItem);
+        });
+
+        popupCost.innerHTML = toCurrency(myCart.cost);
+        popupDiscount.innerHTML = toCurrency(myCart.discount);
+        popupCostDiscount.innerHTML = toCurrency(myCart.costDiscount);
+    }
+</script>
+
+</body>
+</html>

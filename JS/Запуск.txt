@@ -1,0 +1,2 @@
+cd "C:\Users\Иван\Desktop\Web\3\Золотая середина\JS"
+node server.js ```

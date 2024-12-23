@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" href="../images/favicon.png" type="image/x-icon">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/cart.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <title>ЛР4</title>
+
+  <script>
+      function performSearch(event) {
+          event.preventDefault();
+          const query = document.querySelector(".form-control").value;
+          window.location.href = `Search.html?search=${encodeURIComponent(query)}`;
+      }
+  </script>
+</head>
+<body>
+
+
+
+  <div id="header-container"></div>
+
+  <button class="cart" id="cart">
+    <img class="cart__image" src="../images/cart.png" alt="Cart" />
+    <div class="cart__num" id="cart_num">0</div>
+  </button>
+  
+
+
+  <div class="popup" id="popup">
+    <div class="popup__container" id="popup_container">
+        <div class="popup__item">
+            <h1 class="popup__title">Оформление заказа</h1>
+        </div>
+        <div class="popup__item" id="popup_product_list">
+            <div class="popup__product">
+                <div class="popup__product-wrap">
+                    <img
+                        src="./images/iphone-14-pro-max-gold.png"
+                        alt="Apple IPhone 14 Pro Max 256Gb"
+                        class="popup__product-image"
+                    />
+                    <h2 class="popup__product-title">
+                        Смартфон Apple IPhone 14 Pro Max 256Gb, золотой
+                    </h2>
+                </div>
+                <div class="popup__product-wrap">
+                    <div class="popup__product-price">135000</div>
+                    <button class="popup__product-delete">✖</button>
+                </div>
+            </div>
+        </div>
+        <div class="popup__item">
+            <div class="popup__cost">
+                <h2 class="popup__cost-title">Итого</h2>
+                <output class="popup__cost-value" id="popup_cost">150000</output>
+            </div>
+            <div class="popup__cost">
+                <h2 class="popup__cost-title">Скидка</h2>
+                <output class="popup__cost-value" id="popup_discount">15000</output>
+            </div>
+            <div class="popup__cost">
+                <h2 class="popup__cost-title">Итого со скидкой</h2>
+                <output class="popup__cost-value" id="popup_cost_discount">135000</output>
+            </div>
+        </div>
+        <!-- Кнопка очистки корзины -->
+        <div class="popup__item">
+            <button class="popup__clear-cart" id="popup_clear_cart">Очистить всё</button>
+        </div>
+        <button class="popup__close" id="popup_close">✖</button>
+    </div>
+</div>
+
+  
+  <script>
+
+
+  function toNum(str) {
+  const num = Number(str.replace(/[^0-9.]/g, ""));
+  return num;
+}
+
+function toCurrency(num) {
+  const format = new Intl.NumberFormat("ru-RU", {
+    style: "currency",
+    currency: "RUB",
+    minimumFractionDigits: 0,
+  }).format(num);
+  return format;
+}
+
+
+
+// Функция для обнуления корзины
+function clearCart() {
+    myCart.products = []; // Очищаем массив продуктов в корзине
+    localStorage.setItem("cart", JSON.stringify(myCart)); // Сохраняем изменения в локальном хранилище
+    updatePopup(); // Обновляем содержимое попапа
+}
+
+// Функция для обновления содержимого попапа
+function updatePopup() {
+    const popupProductList = document.getElementById('popup_product_list');
+    popupProductList.innerHTML = ''; // Очищаем список продуктов
+
+    // Обновляем значения итогов
+    document.getElementById('popup_cost').innerText = '0';
+    document.getElementById('popup_discount').innerText = '0';
+    document.getElementById('popup_cost_discount').innerText = '0';
+
+    // Обновляем счетчик на странице
+    const cartNum = document.getElementById('cart_num'); // Элемент для отображения количества товаров
+    cartNum.textContent = myCart.count; // Обновляем отображаемый счетчик товаров
+}
+
+// Добавляем обработчик события для кнопки очистки
+const clearCartButton = document.getElementById('popup_clear_cart');
+clearCartButton.addEventListener('click', (e) => {
+    e.preventDefault(); // Предотвращаем перезагрузку страницы
+    clearCart(); // Вызываем функцию для обнуления корзины
+});
+
+// Остальная часть вашего кода...
+
+  </script>
+  
+  <div class="container-fluid"> 
+      <div class="row justify-content-center"> 
+          <div class="col-md-9"> 
+              <h1 class="display-4 text-center lead mt-20 mb-20">КАТАЛОГ</h1>
+              
+          </div>
+      </div>
+  </div>
+  
+  <main class="container mt-4">
+      <div class="row" id="tours-container">
+          <!-- Динамически загружаемые карточки будут добавлены сюда -->
+
+      </div>
+      </div>
+  </main>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+      // Функция для загрузки хедера
+      function loadHeader() {
+          fetch('header.html')
+              .then(response => {
+                  if (!response.ok) {
+                      throw new Error('Ошибка загрузки: ' + response.status);
+                  }
+                  return response.text();
+              })
+              .then(data => {
+                  document.getElementById('header-container').innerHTML = data;
+                  highlightActiveLink(); // Вызываем highlightActiveLink после загрузки хедера
+              })
+              .catch(error => console.error('Ошибка при загрузке header.html:', error));
+      }
+
+      // Функция для загрузки туров
+      async function loadTours() {
+    try {
+        const response = await fetch('http://localhost:5502/api/tours'); // Замените на ваш API-эндпоинт
+        const tours = await response.json();
+        const toursContainer = document.getElementById('tours-container');
+
+        // Проверка на наличие данных
+        if (tours.length === 0) {
+            toursContainer.innerHTML = '<p class="text-center">Нет доступных туров.</p>';
+            return;
+        }
+
+        tours.forEach(tour => {
+            const col = document.createElement('div');
+            col.className = 'col-md-3 mb-4';
+            col.innerHTML = `
+                <div class="card text-center hover-effect">
+                    <img class="card__image" src="${window.location.origin}/${tour.image}" alt="${tour.name}" />
+                    <div class="card-body">
+                        
+                        <h2 class="card__title">${tour.name}</h2>
+                        <div class="card__short_description">${tour.short_description}</div>
+                        <div class="card__price--common"><strong>${tour.price} ₽</strong></div>
+                        <div class="card__price--discount">${tour.discountedPrice}</div>
+                        <div class="card__available">Доступно: ${tour.available} </div>
+                        <button class="card__add">Добавить в корзину</button>
+                        <button onclick="location.href='tour.html?id=${tour.id}'">Страница тура</button>
+                    </div>
+                </div>
+            `;
+            toursContainer.appendChild(col);
+        });
+
+        // Назначаем обработчики событий для кнопок "Добавить в корзину"
+        const cardAddArr = Array.from(document.querySelectorAll(".card__add"));
+        cardAddArr.forEach((cardAdd) => {
+            cardAdd.addEventListener("click", (e) => {
+                e.preventDefault();
+                const card = e.target.closest(".card");
+                const product = new Product(card);
+                myCart.addProduct(product);
+                localStorage.setItem("cart", JSON.stringify(myCart));
+                cartNum.textContent = myCart.count;
+            });
+        });
+    } catch (error) {
+        console.error('Ошибка при загрузке туров:', error);
+        const toursContainer = document.getElementById('tours-container');
+        toursContainer.innerHTML = '<p class="text-center">Ошибка при загрузке туров.</p>';
+    }
+}
+
+      // Функция для выделения активной ссылки
+      function highlightActiveLink() {
+          const currentUrl = window.location.pathname; // Получаем текущий путь
+          const navLinks = document.querySelectorAll(".navbar-nav .nav-link");
+
+          navLinks.forEach(link => {
+              // Если href заканчивается на текущий URL и не является ссылкой на аккаунт
+              if (link.href.includes(currentUrl) && !link.classList.contains('account-link')) {
+                  link.classList.add("active-link");
+              }
+          });
+      }
+
+      // Добавляем обработчики события load
+      window.addEventListener('load', function() {
+          loadHeader();
+          loadTours(); // Загружаем туры только на странице каталога
+
+          // Проверяем, находимся ли мы на странице тура
+          const urlParams = new URLSearchParams(window.location.search);
+          const tourId = urlParams.get('id');
+
+          if (tourId) {
+              loadTourDetails(tourId); // Загружаем детали тура только если есть ID
+          }
+      });
+
+      // Функция для загрузки деталей тура
+      async function loadTourDetails(tourId) {
+          try {
+              const response = await fetch(`http://localhost:5502/api/tours/${tourId}`); // Замените на ваш API-эндпоинт
+              const tour = await response.json();
+              const tourDetailsContainer = document.getElementById('tour-details');
+
+              if (!tour) {
+                  tourDetailsContainer.innerHTML = '<p class="text-center">Тур не найден.</p>';
+                  return;
+              }
+
+              tourDetailsContainer.innerHTML = `
+                  <h2>${tour.name}</h2>
+                  <img src="${window.location.origin}/${tour.image}" alt="${tour.name}" class="img-fluid">
+                  <p><strong>Описание:</strong> ${tour.full_description}</p>
+                  <p><strong>Цена:</strong> ${tour.price} ₽</p>
+                  <p><strong>Даты:</strong> ${tour.dates}</p>
+                  <p><strong>Место назначения:</strong> ${tour.destination}</p>
+                  <a href="catalog.html" class="btn btn-primary">Вернуться к каталогу</a>
+                  
+              `;
+          } catch (error) {
+              console.error('Ошибка при загрузке деталей тура:', error);
+              const tourDetailsContainer = document.getElementById('tour-details');
+              tourDetailsContainer.innerHTML = '<p class="text-center">Ошибка при загрузке деталей тура.</p>';
+          }
+      }
+
+      // Обработчик для открытия попапа
+      document.getElementById('cart').addEventListener('click', function() {
+          document.getElementById('popup').style.display = 'flex'; // Показываем попап
+      });
+
+      // Обработчик для закрытия попапа
+      document.getElementById('popup_close').addEventListener('click', function() {
+          document.getElementById('popup').style.display = 'none'; // Скрываем попап
+      });
+
+      // Закрытие попапа при клике вне него
+      window.addEventListener('click', function(event) {
+          const popup = document.getElementById('popup');
+          if (event.target === popup) {
+              popup.style.display = 'none';
+          }
+      });
+  </script>
+<script src="../JS/header.js"></script>
+
+<div id="footer-container"></div> <!-- Место для футера -->
+<script src="../JS/footer.js"></script>
+
+
+
+
+<script>
+  function toNum(str) {
+      const num = Number(str.replace(/[^0-9.]/g, ""));
+      return num;
+  }
+
+  function toCurrency(num) {
+      const format = new Intl.NumberFormat("ru-RU", {
+          style: "currency",
+          currency: "RUB",
+          minimumFractionDigits: 0,
+      }).format(num);
+      return format;
+  }
+
+  const cardAddArr = Array.from(document.querySelectorAll(".card__add"));
+  const cartNum = document.querySelector("#cart_num");
+  const cart = document.querySelector("#cart");
+  const popup = document.querySelector("#popup");
+  const popupClose = document.querySelector("#popup_close");
+  const body = document.body;
+  const popupProductList = document.querySelector("#popup_product_list");
+  const popupCost = document.querySelector("#popup_cost");
+  const popupDiscount = document.querySelector("#popup_discount");
+  const popupCostDiscount = document.querySelector("#popup_cost_discount");
+
+  class Product {
+      constructor(card) {
+          this.imageSrc = card.querySelector(".card__image").src;
+          this.name = card.querySelector(".card__title").innerText;
+          this.price = card.querySelector(".card__price--common").innerText;
+          this.priceDiscount = card.querySelector(".card__price--discount").innerText;
+      }
+  }
+
+  class Cart {
+      constructor() {
+          this.products = [];
+      }
+      get count() {
+          return this.products.length;
+      }
+      addProduct(product) {
+          this.products.push(product);
+      }
+      removeProduct(product) {
+          const index = this.products.indexOf(product);
+          if (index > -1) {
+              this.products.splice(index, 1);
+          }
+      }
+      get cost() {
+          return this.products.reduce((acc, product) => acc + toNum(product.price), 0);
+      }
+      get costDiscount() {
+          return this.products.reduce((acc, product) => acc + toNum(product.priceDiscount), 0);
+      }
+      get discount() {
+          return this.cost - this.costDiscount;
+      }
+  }
+
+  const myCart = new Cart();
+
+  if (localStorage.getItem("cart") == null) {
+      localStorage.setItem("cart", JSON.stringify(myCart));
+  }
+
+  const savedCart = JSON.parse(localStorage.getItem("cart"));
+  myCart.products = savedCart.products || [];
+  cartNum.textContent = myCart.count;
+
+  cardAddArr.forEach((cardAdd) => {
+      cardAdd.addEventListener("click", (e) => {
+          e.preventDefault();
+          const card = e.target.closest(".card");
+          const product = new Product(card);
+          myCart.addProduct(product);
+          localStorage.setItem("cart", JSON.stringify(myCart));
+          cartNum.textContent = myCart.count;
+      });
+  });
+
+  cart.addEventListener("click", (e) => {
+      e.preventDefault();
+      popup.classList.add("popup--open");
+      body.classList.add("lock");
+      popupContainerFill();
+  });
+
+  popupClose.addEventListener("click", (e) => {
+      e.preventDefault();
+      popup.classList.remove("popup--open");
+      body.classList.remove("lock");
+  });
+
+  function popupContainerFill() {
+      popupProductList.innerHTML = '';
+      myCart.products.forEach((product) => {
+          const productItem = document.createElement("div");
+          productItem.classList.add("popup__product");
+          productItem.innerHTML = `
+              <img src="${product.imageSrc}" alt="${product.name}" class="popup__product-image" />
+              <h2 class="popup__product-title">${product.name}</h2>
+              <div class="popup__product-price">${toCurrency(toNum(product.price))}</div>
+              <button class="popup__product-delete">✖</button>
+          `;
+
+          const productDelete = productItem.querySelector(".popup__product-delete");
+          productDelete.addEventListener("click", () => {
+              myCart.removeProduct(product);
+              localStorage.setItem("cart", JSON.stringify(myCart));
+              popupContainerFill();
+              cartNum.textContent = myCart.count;
+          });
+
+          popupProductList.appendChild(productItem);
+      });
+
+      popupCost.innerHTML = toCurrency(myCart.cost);
+      popupDiscount.innerHTML = toCurrency(myCart.discount);
+      popupCostDiscount.innerHTML = toCurrency(myCart.costDiscount);
+  }
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,215 @@
+
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+/* --------------------- Created By InCoder --------------------- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+body {
+  height: 100vh;
+  background: linear-gradient(to top left, #000000e6, #404040) no-repeat;
+}
+/* width */  
+::-webkit-scrollbar {
+  width: 5px;
+}
+/* Track */  
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+/* Handle */  
+::-webkit-scrollbar-thumb {
+  border-radius: 5rem;
+  background: #d0d0ce45;
+}
+/* Handle on hover */  
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+.header {
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 3rem;
+  display: flex;
+  position: fixed;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  align-items: center;
+  background: #232323;
+  justify-content: space-between;
+}
+.header .title {
+  color: #ffffff;
+}
+.header .options .inBtn {
+  border: 0;
+  width: 3rem;
+  height: 3rem;
+  font-size: 1.2rem;
+  cursor: pointer;
+  color: #ffffff;
+  margin-right: 0.5rem;
+  background: transparent;
+}
+.header .options .inBtn:hover {
+  background-color: #5903d8;
+}
+.mainContainer {
+  height: 100%;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.dragOrDropContainer {
+  width: 80%;
+  height: 80%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.dragOrDropContainer.hide {
+  display: none;
+}
+.dragOrDropContainer .icon {
+  height: 6.5rem;
+  font-size: 5rem;
+  color: #ffffff;
+}
+.dragOrDropContainer .text {
+  color: #ffffff;
+  text-align: center;
+  font-size: clamp(1rem, 8vw, 2rem);
+}
+.dragOrDropContainer.drag .icon {
+  animation: upload 1s infinite linear alternate;
+}
+@keyframes upload {
+  0% {
+    transform: translateY(0rem);
+  }
+  100% {
+    transform: translateY(-1rem);
+  }
+}
+.editorOptions .sideBar {
+  top: 4rem;
+  width: 15rem;
+  height: 80vh;
+  right: -15rem;
+  position: fixed;
+  overflow-y: hidden;
+  background: #181818;
+  border-top-left-radius: 0.5rem;
+  border-bottom-left-radius: 0.5rem;
+  transition: right 0.5s cubic-bezier(0, 0.81, 0, 0.95);
+}
+.editorOptions .sideBar.active {
+  right: 0;
+}
+.editorOptions .sideBar.active .sidebarToggleBtn {
+  right: 15rem;
+}
+.editorOptions .sideBar:hover {
+  overflow-y: auto;
+}
+.editorOptions .sideBar .preview {
+  padding-top: 0.6rem;
+  padding-left: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #ffffff2b;
+}
+.editorOptions .sideBar .preview p {
+  color: #ffffffc7;
+}
+.editorOptions .sideBar .previewImage {
+  width: 90%;
+  height: 8rem;
+  overflow: hidden;
+  border-radius: 0.2rem;
+  border: 2px dashed #ffffff4a;
+}
+.editorOptions .sideBar .options .zoom,
+.editorOptions .sideBar .options .flip,
+.editorOptions .sideBar .options .aspectRatio,
+.editorOptions .sideBar .options .dragMode,
+.editorOptions .sideBar .options .controlCropper,
+.editorOptions .sideBar .options .rotate {
+  padding-bottom: 0.6rem;
+  border-bottom: 1px solid #ffffff14;
+}
+.editorOptions .sideBar .options .zoom p,
+.editorOptions .sideBar .options .flip p,
+.editorOptions .sideBar .options .dragMode p,
+.editorOptions .sideBar .options .aspectRatio p,
+.editorOptions .sideBar .options .controlCropper p,
+.editorOptions .sideBar .options .rotate p {
+  font-size: 0.8rem;
+  padding-top: 0.6rem;
+  padding-left: 1rem;
+  color: #ffffffc7;
+}
+.optionBtn,
+.optionBtnSqr {
+  border: 0;
+  width: 2.5rem;
+  height: 2.5rem;
+  cursor: pointer;
+  font-size: 1rem;
+  border-radius: 50%;
+  color: #ffffffc7;
+  margin-right: 1rem;
+  background: #ffffff0f;
+  transition: all 0.2s ease-in-out;
+}
+.optionBtnSqr {
+  width: 3rem;
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+  height: 2rem !important;
+  font-size: 0.9rem !important;
+  border-radius: 0.5rem !important;
+}
+.optionBtnSqr:hover,
+.optionBtnSqr.selected {
+  background: #ffffff1f;
+}
+.optionBtn:hover,
+.optionBtn.selected {
+  background: #ffffff1f;
+}
+.btnWrapper {
+  width: 100%;
+  margin-top: 0.5rem;
+  padding-left: 1rem;
+}
+.sidebarToggleBtn {
+  right: 0;
+  top: 5rem;
+  border: 0;
+  width: 2rem;
+  height: 2.5rem;
+  cursor: pointer;
+  position: fixed;
+  color: #ffffff;
+  background: #0000004d;
+  border-top-left-radius: 0.5rem;
+  border-bottom-left-radius: 0.5rem;
+  transition: right 0.5s cubic-bezier(0, 0.81, 0, 0.95);
+}
+#imageWorkSpace {
+  max-width: 100%;
+  max-height: 100%;
+}
+.cropper-drag-box {
+  opacity: 1!important;
+  background-color: #00000080!important;
+}
+.outputDownloadBtn.hide {
+  display: none;
+}

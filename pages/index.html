@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="shortcut icon" href="../images/favicon.png" type="image/x-icon">
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+	<link rel="stylesheet" href="../css/style.css">
+	<link rel="stylesheet" href="../css/slider.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+		<title>ЛР4</title>
+		<script>
+			function performSearch(event) {
+			  event.preventDefault();
+			  const query = document.querySelector(".form-control").value;
+			  window.location.href = `Search.html?search=${encodeURIComponent(
+				query
+			  )}`;
+			}
+		  </script>
+		  
+	</head>
+<body>
+	<div id="header-container"></div>
+
+<!-- Основной блок слайдера -->
+
+  
+<div class="container-fluid"> 
+    <div class="row justify-content-center"> 
+		<div class="col-md-9"> 
+			
+			<h1 class="display-4 text-center lead mt-20 mb-20">АВТОБУСНЫЕ ЭКСКУРСИИ И ТУРЫ</h1>
+
+            <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
+				<div class="carousel-inner">
+					<div class="carousel-item active">
+						<img src="../images/novogodniye.png" class="d-block w-100" alt="Первый слайд">
+					</div>
+					<div class="carousel-item">
+						<img src="../images/belarusnesvizh.jpg" class="d-block w-100" alt="Второй слайд">
+					</div>
+					<div class="carousel-item">
+						<img src="../images/lori-0004524779-a7-crop.jpg" class="d-block w-100" alt="Третий слайд">
+					</div>
+					<div class="carousel-item">
+						<img src="../images/sandy-dunes-baltic-beachsunset-beach-pine-treessun-reflection-se-water.jpg" class="d-block w-100" alt="Четвертый слайд">
+					</div>
+				</div>
+				<button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+					<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+					<span class="visually-hidden">Предыдущий</span>
+				</button>
+				<button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+					<span class="carousel-control-next-icon" aria-hidden="true"></span>
+					<span class="visually-hidden">Следующий</span>
+				</button>
+			</div>
+            <p class="lead">Вы зашли на сайт официального туроператора по России «Золотая Середина». Здесь Вы можете записаться на автобусные экскурсии из Москвы и разных городов Подмосковья или заказать необходимый тур для своей группы на автобусе или поезде. Наш опыт организации экскурсий более 10 лет! Наличие проверенных экскурсоводов в Москве, Казани, Санкт-Петербурге, Пскове, Дивеево, Селигере и других исторических городах.</p>
+            <p class="lead">Вы можете быть уверены, что мы подберем для Вас лучший вариант транспорта, экскурсионной программы тура, питания в кафе, размещения в комфортном отеле и развлекательной программы для наших клиентов. По Вашей просьбе, мы заменим обед в программе на постный или вегетарианский, а влюбленных пар, во время многодневных экскурсий автобусом, разместим в номерах с 2-спальной кроватью.</p>
+				
+            
+			<div class="container mt-5">
+				<div class="row justify-content-center">
+					<div class="col-md-8">
+						<div class="card">
+							<div class="card-header text-center">
+								<h3>Популярные направления</h3>
+							</div>
+							<ul class="list-group list-group-flush">
+								<li class="list-group-item lead">
+									<a href="Catalog.html" class="d-flex align-items-center text-decoration-none">
+										<img src="../images/tours/Kaliningrad.png" alt="Калининград" class="card-img-top" style="width: 300px; margin-right: 10px;">
+										Калининград
+									</a>
+								</li>
+								<li class="list-group-item lead">
+									<a href="Catalog.html" class="d-flex align-items-center text-decoration-none">
+										<img src="../images/tours/Pskov.png" alt="Псков" class="card-img-top" style="width: 300px; margin-right: 10px;">
+										Псков
+									</a>
+								</li>
+								<li class="list-group-item lead">
+									<a href="Catalog.html" class="d-flex align-items-center text-decoration-none">
+										<img src="../images/Index/Derbent.png" alt="Дербент" class="card-img-top" style="width: 300px; margin-right: 10px;">
+										Дербент
+									</a>
+								</li>
+								<li class="list-group-item lead">
+									<a href="Catalog.html" class="d-flex align-items-center text-decoration-none">
+										<img src="../images/tours/smolensk.png" alt="Смоленск" class="card-img-top" style="width: 300px; margin-right: 10px;">
+										Смоленск
+									</a>
+								</li>
+								<li class="list-group-item lead">
+									<a href="Catalog.html" class="d-flex align-items-center text-decoration-none">
+										<img src="../images/Index/Kizhi.png" alt="Кижи" class="card-img-top" style="width: 300px; margin-right: 10px;">
+										Кижи
+									</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+            
+            <div class="mt-4">
+                <p class="lead">С нашей туристической фирмой Вы сможете:</p>
+            </div>
+
+            <ol start="1" class="list-decimal lead">
+                <li>заказать школьный тур на автобусе или поезде по Москве и России;</li>
+                <li>организовать корпоративный выезд для сотрудников вашей компании;</li>
+                <li>подобрать круиз по рекам России;</li>
+                <li>совершить подводное приключение с профессиональными инструкторами;</li>
+                <li>попробовать уникальные виды экотуризма, открывающие новые грани путешествий;</li>
+                <li>принять участие в гастрономическом туре по знаменитым ресторанам и кулинарным мастерским.</li>
+            </ol>
+            
+            <p class="lead">А также:</p>
+            
+            <ol start="1" class="decimal lead">
+                <li>
+                    Путешествовать на:
+                    <ol start="1" class="lower-alpha lead">
+                        <li>автобусе</li>
+                        <li>поезде</li>
+                        <li>самолете</li>
+                    </ol>
+                </li>
+                <li>
+                    По таким странам, как <ol start="1" class="lower-alpha lead">
+                        <li>Марокко</li>
+                        <li>Узбекистан</li>
+                        <li>Беларусь</li>
+                    </ol>
+                </li>
+            </ol>
+            
+            <p class="lead">Сотрудничество с «Золотой Серединой» – это гарантия качества и лучшей цены Вашего путешествия! Мы действительно находим золотую середину (оптимальный вариант) во всем, что делаем для Вас! Отдыхайте только вместе с нами!</p>
+        </div>
+    </div>
+</div>
+<BR>
+	
+  <script src="../JS/header.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  <div id="footer-container"></div>
+  <script src="../JS/footer.js"></script>
+  <!-- СЛАЙДЕРЫ -->
+  <script>
+/* Устанавливаем стартовый индекс слайда по умолчанию: */
+let slideIndex = 1;
+/* Вызываем функцию, которая реализована ниже: */
+showSlides(slideIndex);
+
+/* Увеличиваем индекс на 1 — показываем следующий слайд: */
+function nextSlide() {
+    showSlides(slideIndex += 1);
+}
+
+/* Уменьшаем индекс на 1 — показываем предыдущий слайд: */
+function previousSlide() {
+    showSlides(slideIndex -= 1);  
+}
+
+/* Устанавливаем текущий слайд: */
+function currentSlide(n) {
+    showSlides(slideIndex = n);
+}
+
+/* Функция перелистывания: */
+function showSlides(n) {
+    /* Обращаемся к элементам с названием класса "item", то есть к картинкам: */
+    let slides = document.getElementsByClassName("item");
+    
+    /* Проверяем количество слайдов: */
+    if (n > slides.length) {
+      slideIndex = 1
+    }
+    if (n < 1) {
+        slideIndex = slides.length
+    }
+  
+    /* Проходим по каждому слайду в цикле for: */
+    for (let slide of slides) {
+        slide.style.display = "none";
+    }
+    /* Делаем элемент блочным: */
+    slides[slideIndex - 1].style.display = "block";    
+}
+
+
+  </script>
+</body>
+</html>

@@ -1,0 +1,217 @@
+<!DOCTYPE html>  
+<html lang="en">  
+<head>   
+  <meta charset="UTF-8">  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+  <title>Image Editor - InCoderWeb</title>  
+  <link rel="stylesheet" href="../css/upload.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.css">  
+
+</head>  
+<body>  
+    <div class="header">  
+        <div class="title">Image Editor</div>  
+        <div class="options">  
+          <input type="file" hidden>  
+          <button class="inBtn openNewFile" title="Open Image File"><i class="fa-solid fa-file-image"></i></button>  
+          <button class="inBtn outputDownloadBtn hide" title="Upload as Avatar"><i class="fa-solid fa-user-circle"></i></button>  
+        </div>  
+      </div>  
+      <div class="mainContainer">  
+        <div class="dragOrDropContainer">  
+          <div class="icon"><i class="fa-solid fa-cloud-arrow-up"></i></div>  
+          <div class="text">Drag & Drop to Upload File</div>  
+        </div>  
+        <div class="editorOptions">  
+          <div class="sideBar active">  
+            <button class="sidebarToggleBtn"><i class="fa-solid fa-chevron-left"></i></button>  
+            <div class="preview">  
+              <p>Preview</p>  
+              <div class="previewImage"></div>  
+            </div>  
+            <div class="options">  
+          <div class="zoom">  
+            <p>Zoom In / Zoom Out</p>  
+            <div class="btnWrapper">  
+              <button class="optionBtn zoomIn"><i class="fa-solid fa-magnifying-glass-plus"></i></button>  
+              <button class="optionBtn zoomOut"><i class="fa-solid fa-magnifying-glass-minus"></i></button>  
+            </div>  
+          </div>  
+          <div class="rotate">  
+            <p>Rotate Image</p>  
+            <div class="btnWrapper">  
+              <button class="optionBtn rotateLeft"><i class="fa-solid fa-rotate-left"></i></button>  
+              <button class="optionBtn rotateRight"><i class="fa-solid fa-rotate-right"></i></button>  
+            </div>  
+          </div>  
+          <div class="flip">  
+            <p>Flip Image</p>  
+            <div class="btnWrapper">  
+              <button class="optionBtn flipLeftRight"><i class="fa-solid fa-arrows-left-right"></i></button>  
+              <button class="optionBtn flipUpDown"><i class="fa-solid fa-arrows-up-down"></i></button>  
+            </div>  
+          </div>  
+          <div class="aspectRatio">  
+            <p>Aspect Ratio</p>  
+            <div class="btnWrapper">  
+              <button class="optionBtnSqr">16:9</button>  
+              <button class="optionBtnSqr">4:5</button>  
+              <button class="optionBtnSqr">1:1</button>  
+              <button class="optionBtnSqr">2:3</button>  
+              <button class="optionBtnSqr">Free</button>  
+            </div>  
+          </div>  
+          <div class="dragMode">  
+            <p>Drag Mode</p>  
+            <div class="btnWrapper">  
+              <button class="optionBtn dragModeBtn"><i class="fa-solid fa-crop-simple"></i></button>  
+              <button class="optionBtn dragModeBtn"><i class="fa-solid fa-arrows-up-down-left-right"></i></button>  
+            </div>  
+          </div>  
+          <div class="controlCropper">  
+            <p>Control Cropper</p>  
+            <div class="btnWrapper">  
+              <button class="optionBtn cropperClear"><i class="fa-solid fa-bars-staggered"></i></button>  
+              <button class="optionBtn cropperCrop"><i class="fa-solid fa-crop-simple"></i></button>  
+            </div>  
+          </div>  
+        </div>  
+      </div>  
+    </div>  
+  </div>  
+  <script>const openNewFile = document.querySelector('.openNewFile')  
+    dragOrDropContainer = document.querySelector('.dragOrDropContainer')  
+    dragBoxText = document.querySelector('.dragOrDropContainer .text')  
+    fileInput = document.querySelector('.header .options input[type=file]')  
+    sidebarToggleBtn = document.querySelector('.sidebarToggleBtn')  
+    sideBar = document.querySelector('.sideBar')  
+    outputDownloadBtn = document.querySelector('.outputDownloadBtn')  
+    optionBtnSqr = document.querySelectorAll('.optionBtnSqr')  
+    dragModeBtn = document.querySelectorAll('.dragModeBtn')  
+    let file  
+    openNewFile.addEventListener("click", () => {  
+      fileInput.click()  
+    })  
+    fileInput.addEventListener('change', () => {  
+      file = fileInput.files[0];  
+      uploadFile()  
+    })  
+    const uploadFile = () => {  
+      let fileType = file.type;  
+      dragOrDropContainer.style.cursor = 'progress'  
+      dragBoxText.innerText = 'Uploading file, Please Wait...'  
+      let validExt = ["image/jpeg", "image/jpg", "image/png"];  
+      if (validExt.includes(fileType)) {  
+        let p = new Promise((resolve, reject) => {  
+          let fileReader = new FileReader()  
+          fileReader.onload = () => {  
+            let fileURL = fileReader.result  
+            let imageTag = `<img src="${fileURL}" id="imageWorkSpace" alt="image">`  
+            dragOrDropContainer.innerHTML = imageTag  
+            dragOrDropContainer.style.cursor = 'auto'  
+            outputDownloadBtn.classList.remove('hide')  
+            resolve(true)  
+          }  
+          fileReader.readAsDataURL(file)  
+        }).then(() => {  
+          let options = {  
+            dargMode: "move",  
+            preview: ".previewImage",  
+            viewMode: 2,  
+            modal: false,  
+            background: false,  
+            ready: () => {  
+              // Zoom Image  
+              document.querySelector('.zoomIn').onclick = () => cropper.zoom(0.1)  
+              document.querySelector('.zoomOut').onclick = () => cropper.zoom(-0.1)  
+              // Rotate Image  
+              document.querySelector('.rotateLeft').onclick = () => cropper.rotate(90)  
+              document.querySelector('.rotateRight').onclick = () => cropper.rotate(-90)  
+              // Flip Image  
+              let flipX = -1  
+              flipY = -1  
+              document.querySelector('.flipLeftRight').onclick = () => {  
+                cropper.scale(flipX, 1)  
+                flipX = -flipX  
+              }  
+              document.querySelector('.flipUpDown').onclick = () => {  
+                cropper.scale(1, flipY)  
+                flipY = -flipY  
+              }  
+              // set Aspect Ratio  
+              optionBtnSqr[0].onclick = () => cropper.setAspectRatio(1.7777777777777777)  
+              optionBtnSqr[1].onclick = () => cropper.setAspectRatio(1.4444444444444444)  
+              optionBtnSqr[2].onclick = () => cropper.setAspectRatio(1)  
+              optionBtnSqr[3].onclick = () => cropper.setAspectRatio(0.6666666666666666)  
+              optionBtnSqr[4].onclick = () => cropper.setAspectRatio(0)  
+              // Cropper Control  
+              document.querySelector('.cropperClear').onclick = () => cropper.clear()  
+              document.querySelector('.cropperCrop').onclick = () => cropper.crop()  
+              // Drag Mode  
+              dragModeBtn[0].onclick = () => {  
+                dragModeBtn[0].classList.remove('selected')  
+                dragModeBtn[0].classList.toggle('selected')  
+                cropper.setDragMode("crop")  
+              }  
+              dragModeBtn[1].onclick = () => {  
+                dragModeBtn[0].classList.remove('selected')  
+                dragModeBtn[1].classList.toggle('selected')  
+                cropper.setDragMode("move")  
+              }  
+              // download Image  
+              outputDownloadBtn.onclick = () => {  
+                outputDownloadBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>'  
+                setTimeout(() => {  
+                  cropper.getCroppedCanvas().toBlob((blob) => {  
+                    let downloadURL = window.URL.createObjectURL(blob)  
+                    let a = document.createElement('a')  
+                    a.href = downloadURL  
+                    a.download = `output-${Date.now()}.jpg`  
+                    a.click()  
+                    outputDownloadBtn.innerHTML = '<i class="fa-solid fa-download"></i>'   
+                  })  
+                }, 2000)  
+              }  
+            }  
+          }  
+          let imageWorkSpace = document.querySelector('.dragOrDropContainer #imageWorkSpace')  
+          let cropper = new Cropper(imageWorkSpace, options)  
+        })  
+      } else {  
+        dragOrDropContainer.classList.remove("hide")  
+        dragOrDropContainer.classList.remove("drag")  
+        dragBoxText.innerText = "Drag & Drop to Upload File"  
+        alert("This File is nat valid. Please choose another file and try again.")  
+      }  
+    }  
+    sidebarToggleBtn.addEventListener("click", () => {  
+      sideBar.classList.toggle('active')  
+      if (sideBar.classList.contains('active')) {  
+        sidebarToggleBtn.querySelector('i').classList.remove('fa-chevron-left')  
+        sidebarToggleBtn.querySelector('i').classList.add('fa-chevron-right')  
+      } else {  
+        sidebarToggleBtn.querySelector('i').classList.remove('fa-chevron-right')  
+        sidebarToggleBtn.querySelector('i').classList.add('fa-chevron-left')  
+      }  
+    })  
+    dragOrDropContainer.addEventListener('dragover', (e) => {  
+      e.preventDefault()  
+      dragOrDropContainer.classList.add('drag')  
+      dragBoxText.innerText = 'Release to Upload File'  
+    })  
+    dragOrDropContainer.addEventListener('dragleave', (e) => {  
+      e.preventDefault()  
+      dragOrDropContainer.classList.remove('drag')  
+      dragBoxText.innerText = 'Drag & Drop to Upload File'  
+    })  
+    dragOrDropContainer.addEventListener('drop', (e) => {  
+      e.preventDefault()  
+      file = e.dataTransfer.files[0];  
+      uploadFile()  
+    })  </script> 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.js"></script>  
+  <script src="script.js"></script>  
+</body>  
+</html>

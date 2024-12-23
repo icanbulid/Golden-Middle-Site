@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="../images/favicon.png" type="image/x-icon">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>ЛР4</title>
+    <script>
+        function performSearch(event) {
+            event.preventDefault();
+            const query = document.querySelector(".form-control").value;
+            window.location.href = `Search.html?search=${encodeURIComponent(query)}`;
+        }
+    </script>
+</head>
+<body>
+	<header>
+		<div class="row">
+			<div class="container">
+				<div class="row bg-white text-center py-3">
+					<div class="col-md-3">
+						<div style="width: 150px; height: auto; background-color: #e0e0e0;"></div>
+					</div>
+					<div class="col-md-6">
+						<nav class="navbar navbar-expand-lg navbar-light ">
+							<div class="container-fluid d-flex justify-content-between align-items-center">
+								<ul class="navbar-nav mx-auto">
+									<li class="nav-item">
+										<a class="nav-link" href="index.html">Главная</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" href="About.html">
+											О нас</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" href="Catalog.html">Каталог</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" href="Contacts.html">Контакты</a>
+									</li>
+								</ul>
+							</div>
+						</nav>
+					</div>
+					<div class="col-md-3 ">
+						<button type="button" class="btn btn-primary me-2" style="margin-top: 10px;" onclick="window.location.href='Login.html'">Войти</button>
+						<button type="button" class="btn btn-primary" style="margin-top: 10px;" onclick="window.location.href='Register.html'">Регистрация</button>
+					</div>
+				</div>
+			</div>
+	
+			<div class="row align-items-center">
+				<div class="col-md-3 text-center">
+					<img src="../images/Mastercard.png" alt="Телефон" style="width: 80px; height: auto;">
+					<img src="../images/Maestro.png" alt="Телефон" style="width: 80px; height: auto;">
+					<img src="../images/mir.png" alt="Телефон" style="width: 80px; height: auto;">
+
+				</div>
+
+				<div class="col-6">
+					<a href="index.html">
+						<img src="../images/Logo.png" class="mx-auto d-block" style="width: 170px; height: auto; margin-top: -50px; margin-bottom: -45px;">
+					</a>
+				</div>
+				<div class="col-md-3 text-center">
+					<a class="nav-link" href="https://vk.com/rutravelexpert" style="display: inline-block; margin-right: 10px;">
+						<img src="../images/vk.png" alt="ВКонтакте" style="width: 80px; height: auto;">
+					</a>
+					<a class="nav-link" href="Mail.html" style="display: inline-block;">
+						<img src="../images/mail.png" alt="Почта" style="width: 80px; height: auto;">
+					</a>
+				</div>
+
+				<div class="container">
+					<div class="row bg-white text-center py-3 align-items-center">
+						<div class="col-md-3 text-center">
+							<img src="../images/time.png" alt="Часы" style="width: 30px; height: auto;">
+							<span>Пн-пт:с 9 до 19 ч. пн-пт</span>
+							
+						</div>
+						
+						<div class="col-md-6">
+							<a href="/pages/index.html" class="logo">
+								<span class="logo-text">ЗОЛОТАЯ СЕРЕДИНА</span>
+							</a>
+						</div>
+						<div class="col-md-3 text-center">
+							<img src="../images/phone.png" alt="Телефон" style="width: 30px; height: auto;">
+							<span>8(495)223-92-76 (многоканальный)</span>
+						</div>
+						<form onsubmit="performSearch(event)" class="w-100">
+							<div class="mt-3 input-group">
+								<input type="text" class="form-control" placeholder="Что ищем?">
+								<button type="submit" class="btn btn-primary">Поиск</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</header>
+
+<BR>
+<div class="col-12">
+    <H1 class="text-center">Регистрация</H1>
+</div>
+<div class="col-12 text-center">
+    <form id="registrationForm">
+        <div class="form-group">
+            <input type="email" name="email" placeholder="Email" class="register-input" required />
+        </div>
+        <div class="form-group">
+            <input type="text" name="username" class="form-control" placeholder="Логин" required>
+        </div>
+        <div class="form-group">
+            <input type="text" name="first_name" class="form-control" placeholder="Имя" required>
+        </div>
+        <div class="form-group">
+            <input type="text" name="last_name" class="form-control" placeholder="Фамилия" required>
+        </div>
+        <div class="form-group">
+            <input type="password" name="password" class="form-control" placeholder="Пароль" required>
+        </div>
+        <div class="form-group">
+            <input type="password" name="confirm_password" class="form-control" placeholder="Повторите пароль" required>
+        </div>
+        <div id="registration-error-message" class="mt-2"></div>
+        <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
+    </form>
+</div>
+
+<script>
+    document.getElementById('registrationForm').addEventListener('submit', async (event) => {
+    event.preventDefault();
+
+    const formData = new FormData(event.target);
+    const data = Object.fromEntries(formData.entries());
+
+    // Check if passwords match
+    if (data.password !== data.confirm_password) {
+        document.getElementById('registration-error-message').innerText = 'Пароли не совпадают';
+        return;
+    }
+
+    try {
+        const response = await fetch('http://localhost:5502/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                email: data.email,
+                username: data.username,
+                first_name: data.first_name,
+                last_name: data.last_name,
+                password: data.password,
+            }),
+        });
+
+        if (response.ok) {
+            window.location.href = 'Success.html'; // Redirect to success page
+        } else {
+            const errorData = await response.json();
+            document.getElementById('registration-error-message').innerText = errorData.message || 'Ошибка сервера';
+        }
+    } catch (error) {
+        document.getElementById('registration-error-message').innerText = 'Ошибка сервера';
+        console.error('Fetch error:', error); // Log fetch errors
+    }
+});
+</script>
+
+<div class="col-12 text-center">
+    <a class="nav-flex-link" href="Login.html">Уже зарегистрированы? Логин</a>
+</div>
+<BR>
+
+<footer id="footer" class="bg-light text-dark py-3">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 text-center">
+                <h5 class="text-uppercase mb-3">Информация</h5>
+                <nav class="nav flex-column">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-sm-7">
+                                <a class="nav-link" href="index.html">Главная</a>
+                                <a class="nav-link" href="About.html">О нас</a>
+                            </div>
+                            <div class="col-sm-3">
+                                <a class="nav-link" href="Catalog.html">Каталог</a>
+                                <a class="nav-link" href="Contacts.html">Контакты</a>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+            <div class="col-md-4 text-center">
+                <a class="nav-flex-link" href="Policy.html"><h5 class="text-uppercase mb-3">Политика обработки персональных данных</h5></a>
+            </div>
+            <div class="col-md-4 text-center">
+                <h5 class="text-uppercase mb-3">Связь с нами</h5>
+                <p>Есть вопросы? Позвоните нам:</p>
+                <p><strong>8 (495) 223-92-76</strong> <a class="nav-flex-link" href="Mail.html">Форма обратной связи</a></p>
+            </div>
+        </div>
+    </div>
+
+    <hr class="footer-divider">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <p>&copy; 2024 Все права защищены</p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+</body>
+</html>

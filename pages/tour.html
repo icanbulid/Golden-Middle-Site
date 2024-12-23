@@ -1,0 +1,169 @@
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="shortcut icon" href="../images/favicon.png" type="image/x-icon">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<title>ЛР4</title>
+	<script>
+		function performSearch(event) {
+		  event.preventDefault();
+		  const query = document.querySelector(".form-control").value;
+		  window.location.href = `Search.html?search=${encodeURIComponent(
+			query
+		  )}`;
+		}
+	  </script>
+</head>
+
+<body>
+	<div id="header-container"></div>
+	<div class="row bg-white text-center py-3">
+		<div class="container-fluid"> 
+			<div class="row justify-content-center"> 
+				<div class="col-md-9"> 
+					<div id="tour-details" class="container mt-4">
+					</div>
+				</div>   
+			 </div>    
+		</div>
+	</div>
+		
+	
+<script src="../JS/header.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>		
+<script>
+	async function loadTourImages(tourId) {
+    const response = await fetch(`http://localhost:5502/api/tours/${tourId}/images`);
+    const images = await response.json();
+    return images;
+}
+async function loadTourImages(tourId) {
+    try {
+        const response = await fetch(`http://localhost:5502/api/tours/${tourId}/images`);
+        if (!response.ok) {
+            throw new Error('Сетевая ошибка: ' + response.status);
+        }
+        const images = await response.json();
+        return images; // Возвращаем массив
+    } catch (error) {
+        console.error('Ошибка при загрузке изображений:', error);
+        return []; // Возвращаем пустой массив в случае ошибки
+    }
+}
+
+
+async function loadTourDetails(tourId) {
+    try {
+        const response = await fetch(`http://localhost:5502/api/tours/${tourId}/`); // Замените на ваш API-эндпоинт
+        if (!response.ok) {
+            throw new Error('Сетевая ошибка: ' + response.status);
+        }
+        const tour = await response.json();
+        const tourDetailsContainer = document.getElementById('tour-details');
+        if (!tour) {
+            tourDetailsContainer.innerHTML = '<p class="text-center">Тур не найден.</p>';
+            return;
+        }
+        
+		const images = await loadTourImages(tourId); // Загружаем изображения
+    const imageSlides = images.map((image, index) => `
+        <div class="carousel-item ${index === 0 ? 'active' : ''}">
+            <img src="../${image}" class="d-block w-100" alt="Слайд ${index + 1}">
+        </div>
+    `).join('');
+
+
+        const formattedDescription = tour.description.replace(/\n/g, '<br>');
+        tourDetailsContainer.innerHTML = `
+            <h2>${tour.name}</h2>
+            <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    ${imageSlides}
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Предыдущий</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Следующий</span>
+                </button>
+            </div>
+            <p><strong>Цена:</strong> ${tour.price} ₽</p>
+            <p><strong>Доступно:</strong> ${tour.available}</p>
+            <p><strong>Возможные даты:</strong> ${tour.dates}</p>
+            <p>${formattedDescription}</p>
+            <a href="catalog.html" class="btn btn-primary">Вернуться к каталогу</a>
+        `;
+    } catch (error) {
+        console.error('Ошибка при загрузке деталей тура:', error);
+        const tourDetailsContainer = document.getElementById('tour-details');
+        tourDetailsContainer.innerHTML = '<p class="text-center">Ошибка при загрузке деталей тура.</p>';
+    }
+}
+
+    window.addEventListener('load', function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const tourId = urlParams.get('id');
+    
+        if (tourId) {
+            loadTourDetails(tourId); // Загружаем детали тура только если есть ID
+        } else {
+            document.getElementById('tour-details').innerHTML = '<p class="text-center">ID тура не указан.</p>';
+        }
+    });  
+        </script>
+
+</body>
+
+<footer id="footer" class="bg-light text-dark py-3">
+	<div class="container">
+	  <div class="row">
+		<div class="col-md-4 text-center">
+		  <h5 class="text-uppercase mb-3">Информация</h5>
+		  <nav class="nav flex-column">
+			<div class="container">
+				<div class="row">
+				  <div class="col-sm-7">
+					<a class="nav-link" href="index.html">Главная</a>
+					<a class="nav-link" href="About.html">О нас</a>
+				  </div>
+				  <div class="col-sm-3">
+					<a class="nav-link" href="Catalog.html">Каталог</a>
+					<a class="nav-link" href="Contacts.html">Контакты</a>
+				  </div>
+				</div>
+			  </div>
+		  </nav>
+		</div>
+		<div class="col-md-4 text-center">
+			<a class="nav-flex-link" href="Policy.html"><h5 class="text-uppercase mb-3">Политика обработки персональных данных</h5></a>
+		  </div>
+		<div class="col-md-4 text-center">
+			
+		  <h5 class="text-uppercase mb-3">Связь с нами</h5>
+		  <p>Есть вопросы? Позвоните нам:</p>
+		  <p><strong>8 (495) 223-92-76</strong> <a class="nav-flex-link" href="Mail.html">Форма обратной связи</a></p>
+		  
+		</div>
+		<div class="container">
+			<div class="row">
+			  
+			  <div class="col-md-12 text-center">
+				<p>&copy; 2024 Все права защищены</p>
+			  </div>
+			</div>
+		  </div>
+	  </div>
+	</div>
+
+
+
+
+
+  </footer>
+
+</html>

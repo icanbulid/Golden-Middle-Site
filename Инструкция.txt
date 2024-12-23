@@ -1,0 +1,3 @@
+1. В postgresql создать таблицы из sql_таблицы.txt
+2. tours импортировать из csv.
+3. Запустить server.js через node.js сайт запустить через live server (кнопка go live)

@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="../images/favicon.png" type="image/x-icon">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <title>ЛР4</title>
+    <script>
+        function performSearch(event) {
+            event.preventDefault();
+            const query = document.querySelector(".form-control").value;
+            window.location.href = `Search.html?search=${encodeURIComponent(query)}`;
+        }
+    </script>
+</head>
+<body>
+
+	<div id="header-container"></div>
+
+<div class="col-12">
+    <h1 class="text-center">Логин</h1>
+</div>
+
+<div class="col-12 text-center" id="login-container">
+    <form id="loginForm">
+        <div class="form-login">
+            <input type="text" class="form-control" placeholder="Логин" name="username" required>
+        </div>
+        <div class="form-login">
+            <input type="password" class="form-control" placeholder="Пароль" name="password" required>
+        </div>
+        <div id="login-error-message" class="mt-2"></div>
+        <button type="submit" class="btn btn-primary">Войти</button>
+    </form>
+</div>
+<div class="col-12 text-center" id="account-info" style="display: none;">
+    <h2>Добро пожаловать, <span id="account-username"></span>!</h2>
+</div>
+<div class="col-12 text-center">
+    <a class="nav-flex-link" href="Register.html">Нет Аккаунта? Регистрация</a>
+</div>
+
+
+
+
+
+
+<script>
+    document.getElementById('loginForm').addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        const formData = new FormData(event.target);
+        const data = Object.fromEntries(formData.entries());
+
+        try {
+            const response = await fetch('http://localhost:5502/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            });
+
+            if (response.ok) {
+                const userData = await response.json();
+                localStorage.setItem('user', JSON.stringify(userData.user));
+                displayAccountInfo(userData.user);
+            } else {
+                const errorData = await response.json();
+                document.getElementById('login-error-message').innerText = errorData.message || 'Ошибка входа';
+            }
+        } catch (error) {
+            document.getElementById('login-error-message').innerText = 'Ошибка сервера';
+        }
+    });
+
+function displayAccountInfo(user) {
+    // Скрыть контейнер для входа и показать информацию о аккаунте
+    document.getElementById('login-container').style.display = 'none';
+    document.getElementById('account-info').style.display = 'block';
+    document.getElementById('account-username').innerText = user.username;
+    // Убедиться, что элементы существуют
+    const loggedOutHeader = document.getElementById('header-logged-out');
+    const loggedInHeader = document.getElementById('header-logged-in');
+
+    if (loggedOutHeader && loggedInHeader) {
+        loggedOutHeader.style.display = 'none';
+        loggedInHeader.style.display = 'block';
+    }
+
+    // Обновляем информацию о пользователе
+    const usernameElement = document.getElementById('username');
+    const avatarElement = document.getElementById('avatar');
+
+    if (usernameElement) {
+        usernameElement.innerText = user.username;
+    }
+    if (avatarElement) {
+        avatarElement.src = user.avatar_url; // Используйте src для изображения
+    }
+
+    // Очистка полей ввода
+    document.querySelector('input[name="username"]').value = '';
+    document.querySelector('input[name="password"]').value = '';
+
+    // Добавляем обработчик события для кнопки выхода
+    const logoutButton = document.getElementById('logoutButton');
+    if (logoutButton) {
+        logoutButton.addEventListener('click', () => {
+            localStorage.removeItem('user');
+            location.reload(); // Перезагрузить страницу
+        });
+    }
+
+    // Скрыть ссылку на регистрацию для авторизованных пользователей
+    const registerLink = document.querySelector('.nav-flex-link[href="Register.html"]');
+    if (registerLink) {
+        registerLink.style.display = 'none';
+    }
+}
+
+window.onload = function() {
+    const user = JSON.parse(localStorage.getItem('user'));
+    const headerContainer = document.getElementById('header-container');
+    
+    fetch('header.html')
+        .then(response => response.text())
+        .then(data => {
+            headerContainer.innerHTML = data;
+
+            // Убедитесь, что элементы загружены, прежде чем пытаться их обновить
+            if (user) {
+                displayAccountInfo(user);
+            }
+        })
+        .catch(error => console.error('Ошибка загрузки header.html:', error));
+};
+</script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+<footer id="footer" class="bg-light text-dark py-3">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 text-center">
+                <h5 class="text-uppercase mb-3">Информация</h5>
+                <nav class="nav flex-column">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-sm-7">
+                                <a class="nav-link" href="index.html">Главная</a>
+                                <a class="nav-link" href="About.html">О нас</a>
+                            </div>
+                            <div class="col-sm-3">
+                                <a class="nav-link" href="Catalog.html">Каталог</a>
+                                <a class="nav-link" href="Contacts.html">Контакты</a>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+            <div class="col-md-4 text-center">
+                <a class="nav-flex-link" href="Policy.html"><h5 class="text-uppercase mb-3">Политика обработки персональных данных</h5></a>
+            </div>
+            <div class="col-md-4 text-center">
+                <h5 class="text-uppercase mb-3">Связь с нами</h5>
+                <p>Есть вопросы? Позвоните нам:</p>
+                <p><strong>8 (495) 223-92-76</strong> <a class="nav-flex-link" href="Mail.html">Форма обратной связи</a></p>
+            </div>
+        </div>
+    </div>
+
+    <hr class="footer-divider">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <p>&copy; 2024 Все права защищены</p>
+            </div>
+        </div>
+    </div>
+</footer>
+</body>
+</html>

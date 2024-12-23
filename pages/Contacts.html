@@ -1,0 +1,79 @@
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="shortcut icon" href="../images/favicon.png" type="image/x-icon">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<title>ЛР4</title>
+	<script>
+		function performSearch(event) {
+		  event.preventDefault();
+		  const query = document.querySelector(".form-control").value;
+		  window.location.href = `Search.html?search=${encodeURIComponent(
+			query
+		  )}`;
+		}
+	  </script>
+</head>
+
+<body>
+	<div id="header-container"></div>
+<div class="container-fluid"> 
+    <div class="row justify-content-center"> 
+        <div class="col-md-9"> 
+            <h1 class="display-4 text-center lead mt-4 mb-4">КОНТАКТЫ</h1>
+
+            <div class="container">
+                <p>Реквизиты:</p>
+                <p>ООО "Золотая середина"</p>
+                
+                <div class="d-flex align-items-start justify-content-between mb-4">
+					
+                    <div>
+                        <p>Генеральный директор: Мохнаткина Екатерина Витальевна</p>
+                        <p>Мы Вконтакте: <a href="https://vk.com/rutravelexpert">@rutravelexpert</a></p>
+                        <p>Единый центр бронирования: <strong>8(495)223-92-76</strong> (с 9 до 19 ч. пн-пт)</p>
+						<p>Email: <a href="Mail.html">Форма обратной связи</a></p>
+						<p>Адрес: БЦ Лотос, 117638, г. Москва, ул. Одесская д. 2, пом. 1/2</p>
+                    </div>
+                    <img src="../images/Contacts.png" class="ml-3" width="150" height="auto" alt="Контакты">
+                </div>
+				<iframe
+				src="https://yandex.ru/map-widget/v1/?ll=37.598597%2C55.664207&mode=search&oid=1691400529&ol=biz&sll=37.598597%2C55.664207&source=serp_navig&text=%D0%91%D0%A6%20%D0%9B%D0%BE%D1%82%D0%BE%D1%81%2C%20117638%2C%20%D0%B3.%20%D0%9C%D0%BE%D1%81%D0%BA%D0%B2%D0%B0%2C%20%D1%83%D0%BB.%20%D0%9E%D0%B4%D0%B5%D1%81%D1%81%D0%BA%D0%B0%D1%8F%20%D0%B4.%202%2C%20%D0%BF%D0%BE%D0%BC.%201%2F2&z=16"
+				width="99%"
+				height="450"
+				frameborder="1"
+				allowfullscreen="true"
+				style="position: relative">
+				</iframe>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+		
+	
+<script src="../JS/header.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>		
+
+
+</body>
+
+<div id="footer-container"></div>
+
+<script>
+    fetch('footer.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('footer-container').innerHTML = data;
+        })
+        .catch(error => console.error('Error loading footer:', error));
+</script>
+
+</html>
